@@ -120,9 +120,9 @@ if __name__ == '__main__':
     #     mode="single",
     #     strategy="fast",
     # )
-    # mydocs = loader.load()
-    # print(mydocs[0].metadata)
-    # print(mydocs[0].page_content)
+    # mydocs_bak = loader.load()
+    # print(mydocs_bak[0].metadata)
+    # print(mydocs_bak[0].page_content)
 
     ingest_processor=IngestionProcessor()
 

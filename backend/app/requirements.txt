@@ -3,7 +3,7 @@ uvicorn
 python-dotenv
 pymysql
 DBUtils
-openai
+openai==2.54.0         # 共享 anaconda 环境硬约束：必须保 2.x。atguigu-ai/instructor/langchain-openai(0.3.x) 都声明 openai<2，装它们会把 openai 连带降回 1.x 并搞挂 app
 httpx
-openai-agents
+openai-agents==0.20.0  # 0.21+ 要求 openai>=3，与 knowledge(langchain) 冲突，必须锁 0.20.0
 pystun3

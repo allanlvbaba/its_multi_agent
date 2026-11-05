@@ -11,7 +11,10 @@ class QueryService:
         self.llm=ChatOpenAI(model_name=settings.MODEL,
                             openai_api_key=settings.API_KEY,
                             openai_api_base=settings.BASE_URL,
-                            temperature=0) # temperature作用：控制模型输出的随机度 尽量不要让它乱发挥（尽最大努力保证：影响因素：硬件（并行gpu：精度变乱）网络（moe专家））
+                            temperature=0, # temperature作用：控制模型输出的随机度 尽量不要让它乱发挥（尽最大努力保证：影响因素：硬件（并行gpu：精度变乱）网络（moe专家））
+                            timeout=50, # 秒。必须小于 app 侧 httpx 的 60s 超时：保证服务端先超时、错误可诊断，防止单请求无限挂起占死线程
+                            max_retries=1,
+                            extra_body={"enable_thinking": False}) # Qwen3 系列是思考模型，非流式调用必须关思考，否则时延分钟级且不可控（2026-11-05 实测 12.5s vs 裸调 60s+）
 
 
 

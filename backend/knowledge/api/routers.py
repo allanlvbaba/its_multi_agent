@@ -89,11 +89,11 @@ async def query(request: QueryRequest):
         if not user_question:
             raise HTTPException(status_code=500, detail="查询问题不存在")
 
-        # 2. 调用检索器的检索方法
-        retrieval_context = retrieval_service.retrieval(user_question)
+        # 2. 调用检索器的检索方法（同步阻塞网络IO，必须丢线程池，否则卡死整个事件循环）
+        retrieval_context = await run_in_threadpool(retrieval_service.retrieval, user_question)
 
-        # 3. 调用查询器的查询方法
-        answer = query_service.generate_answer(user_question, retrieval_context)
+        # 3. 调用查询器的查询方法（同步阻塞LLM调用，同上）
+        answer = await run_in_threadpool(query_service.generate_answer, user_question, retrieval_context)
 
         # 4. 封装到响应数据模型
         return QueryResponse(
